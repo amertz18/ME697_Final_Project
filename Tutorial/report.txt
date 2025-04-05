@@ -1,0 +1,25 @@
+TensorFlow 2.0 Upgrade Script
+-----------------------------
+Converted 1 files
+Detected 0 issues that require attention
+--------------------------------------------------------------------------------
+================================================================================
+Detailed log follows:
+
+================================================================================
+--------------------------------------------------------------------------------
+Processing file 'poiseuillePara.py'
+ outputting to 'poiseuillePara_tf2.py'
+--------------------------------------------------------------------------------
+
+100:4: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+101:4: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+102:5: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+103:11: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+116:7: INFO: Changing tf.contrib.layers xavier initializer to a tf.compat.v1.keras.initializers.VarianceScaling and converting arguments.
+
+239:12: INFO: Renamed 'tf.train.AdamOptimizer' to 'tf.compat.v1.train.AdamOptimizer'
+243:7: INFO: Renamed 'tf.global_variables_initializer' to 'tf.compat.v1.global_variables_initializer'
+245:5: INFO: Renamed 'tf.Session' to 'tf.compat.v1.Session'
+--------------------------------------------------------------------------------
+

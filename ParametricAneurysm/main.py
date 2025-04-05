@@ -103,6 +103,7 @@ learning_rate = 1e-3
 
 path = "Cases/"
 
+toc = time.time()
 #path = pre+"aneurysmsigma01scalepara_100pt-tmp_"+str(ii)
 geo_train.geo_train(device,sigma,scale,mu,xStart,xEnd,L,rInlet,x,y,R,yUp,dP,nu,rho,g,batchsize,learning_rate,epochs,path)
 tic = time.time()
