@@ -14,9 +14,9 @@ RHO = 1
 LENGTH = 1
 DIAMETER = 0.1
 EPOCHS = 3000
-BATCH_SIZE = 128
+BATCH_SIZE = 256
 MAX_NU = 0.002
-LEARNING_RATE = 0.005
+LEARNING_RATE = 0.1
 SOFT_WEIGHT = 2
 
 class circlePipePINN(nn.Module):
@@ -52,11 +52,11 @@ class circlePipePINN(nn.Module):
         px = torch.autograd.grad(U[:, 2], x, grad_outputs=torch.ones_like(U[:, 2]), create_graph=True)[0]
         py = torch.autograd.grad(U[:, 2], y, grad_outputs=torch.ones_like(U[:, 2]), create_graph=True)[0]
 
-        contLoss = torch.mean((ux + vy)**2)
-        momLossU = torch.mean(
+        contLoss = torch.sum((ux + vy)**2)
+        momLossU = torch.sum(
             (U[:, 0] * ux + U[:, 1] * uy + px * rho**-1 - nu * (uxx + uyy))**2
         )
-        momLossV = torch.mean(
+        momLossV = torch.sum(
             (U[:, 0] * vx + U[:, 1] * vy + py * rho**-1 - nu * (vxx + vyy))**2
         )
 
@@ -122,8 +122,8 @@ class circlePipePINN(nn.Module):
         plt.xlabel('x')
         plt.ylabel('y')
         plt.title('Streamwise Velocity')
-        plt.show()
         plt.savefig('fig/CircularPipeFlowU.png')
+        plt.close()
 
         plt.figure(figsize=(10, 6))
         plt.contourf(X[:, :, 0], Y[:, :, 0], U[1], levels = 100, cmap=plt.cm.jet)
@@ -131,8 +131,8 @@ class circlePipePINN(nn.Module):
         plt.xlabel('x')
         plt.ylabel('y')
         plt.title('Spanwise Velocity')
-        plt.show()
         plt.savefig('fig/CircularPipeFlowV.png')
+        plt.close()
 
         plt.figure(figsize=(10, 6))
         plt.contourf(X[:, :, 0], Y[:, :, 0], U[1], levels = 100, cmap=plt.cm.jet)
@@ -140,8 +140,8 @@ class circlePipePINN(nn.Module):
         plt.xlabel('x')
         plt.ylabel('y')
         plt.title('Centerline Pressure Profile')
-        plt.show()
         plt.savefig('fig/CircularPipeFlowP.png')
+        plt.close()
 
 pipeFlowModel = circlePipePINN()
 optimizer = optim.Adam(pipeFlowModel.parameters(), lr = LEARNING_RATE)
@@ -150,10 +150,11 @@ trainingLoss = pipeFlowModel.train(optimizer, EPOCHS, SOFT_WEIGHT)
 
 pipeFlowModel.plotOutputSpace()
 
+plt.figure(figsize=(10, 6))
 plt.semilogy(range(EPOCHS), trainingLoss)
 plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.title('Total Loss vs Epoch (Adam Optimizer)')
 plt.grid()
-plt.show()
-plt.savefig('fig/CIrcularPipeFlowLoss.png')
+plt.savefig('fig/CircularPipeFlowLoss.png')
+plt.close()
